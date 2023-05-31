@@ -9,7 +9,7 @@ public class MorseCodeDecoder
     private const string MORSE_LETTER_SEPARATOR = " ";
     private const string TEXT_WORD_SEPARATOR = " ";
 
-    private static readonly Dictionary<char, string> morseDictionary = new()
+    internal static readonly Dictionary<char, string> morseDictionary = new()
     {
         { 'A', ".-" },
         { 'B', "-..." },
@@ -52,24 +52,24 @@ public class MorseCodeDecoder
 
     public static string Decode(string morseCode)
     {
-        StringBuilder sbOutput = new();
-
         string trimmedMorseCode = morseCode.ToUpper().Trim();
-        string[] words = trimmedMorseCode.Split(MORSE_WORD_SEPARATOR.ToCharArray());
+        string[] words = trimmedMorseCode.Split(MORSE_WORD_SEPARATOR);
+        List<string> decodedMorseCode = new List<string>();
 
         foreach (var w in words)
         {
             string[] letters = w.Split(MORSE_LETTER_SEPARATOR);
+            List<string> decodedLetters = new List<string>();
 
             foreach (var l in letters)
             {
-                sbOutput.Append(morseDictionary.FirstOrDefault(x => x.Value == l).Key);
+                decodedLetters.Add(morseDictionary.Single(x => x.Value == l).Key.ToString());
             }
 
-            sbOutput.Append(TEXT_WORD_SEPARATOR);
+            decodedMorseCode.Add(string.Join(string.Empty, decodedLetters));
         }
 
-        return sbOutput.ToString();
+        return string.Join(TEXT_WORD_SEPARATOR, decodedMorseCode.ToArray());
     }
 
     public static string Encode(string value)
