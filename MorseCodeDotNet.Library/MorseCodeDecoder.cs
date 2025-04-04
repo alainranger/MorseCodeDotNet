@@ -12,68 +12,47 @@ public static class MorseCodeDecoder
 
 	private static readonly Dictionary<char, string> morseDictionary = new()
 	{
-		{ 'A', ".-" },
-		{ 'B', "-..." },
-		{ 'C', "-.-." },
-		{ 'D', "-.." },
-		{ 'E', "." },
-		{ 'F', "..-." },
-		{ 'G', "--." },
-		{ 'H', "...." },
-		{ 'I', ".." },
-		{ 'J', ".---" },
-		{ 'K', "-.-" },
-		{ 'L', ".-.." },
-		{ 'M', "--" },
-		{ 'N', "-." },
-		{ 'O', "---" },
-		{ 'P', ".--." },
-		{ 'Q', "--.-" },
-		{ 'R', ".-." },
-		{ 'S', "..." },
-		{ 'T', "-" },
-		{ 'U', "..-" },
-		{ 'V', "...-" },
-		{ 'W', ".--" },
-		{ 'X', "-..-" },
-		{ 'Y', "-.--" },
-		{ 'Z', "--.." },
-		{ '0', "-----" },
-		{ '1', ".----" },
-		{ '2', "..---" },
-		{ '3', "...--" },
-		{ '4', "....-" },
-		{ '5', "....." },
-		{ '6', "-...." },
-		{ '7', "--..." },
-		{ '8', "---.." },
-		{ '9', "----." },
-
+		{ 'A', ".-" }, { 'B', "-..." }, { 'C', "-.-." }, { 'D', "-.." },
+		{ 'E', "." }, { 'F', "..-." }, { 'G', "--." }, { 'H', "...." },
+		{ 'I', ".." }, { 'J', ".---" }, { 'K', "-.-" }, { 'L', ".-.." },
+		{ 'M', "--" }, { 'N', "-." }, { 'O', "---" }, { 'P', ".--." },
+		{ 'Q', "--.-" }, { 'R', ".-." }, { 'S', "..." }, { 'T', "-" },
+		{ 'U', "..-" }, { 'V', "...-" }, { 'W', ".--" }, { 'X', "-..-" },
+		{ 'Y', "-.--" }, { 'Z', "--.." }, { '0', "-----" }, { '1', ".----" },
+		{ '2', "..---" }, { '3', "...--" }, { '4', "....-" }, { '5', "....." },
+		{ '6', "-...." }, { '7', "--..." }, { '8', "---.." }, { '9', "----." }
 	};
+
+	// Dictionnaire inversé pour le décodage
+	private static readonly Dictionary<string, char> reverseMorseDictionary = morseDictionary
+		.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
 
 	public static string Decode(string morseCode)
 	{
 		if (string.IsNullOrWhiteSpace(morseCode))
 			return string.Empty;
 
-		StringBuilder sbOutput = new();
+		var trimmedMorseCode = morseCode.Trim();
+		var words = trimmedMorseCode.Split(MORSE_WORD_SEPARATOR, StringSplitOptions.RemoveEmptyEntries);
 
-		var trimmedMorseCode = morseCode.ToUpper(CultureInfo.InvariantCulture).Trim();
-		var words = trimmedMorseCode.Split(MORSE_WORD_SEPARATOR.ToCharArray());
+		var sbOutput = new StringBuilder();
 
-		foreach (var w in words)
+		foreach (var word in words)
 		{
-			var letters = w.Split(MORSE_LETTER_SEPARATOR);
+			var letters = word.Split(MORSE_LETTER_SEPARATOR, StringSplitOptions.RemoveEmptyEntries);
 
-			foreach (var l in letters)
+			foreach (var letter in letters)
 			{
-				sbOutput.Append(morseDictionary.FirstOrDefault(x => x.Value == l).Key);
+				if (reverseMorseDictionary.TryGetValue(letter, out var decodedChar))
+				{
+					sbOutput.Append(decodedChar);
+				}
 			}
 
 			sbOutput.Append(TEXT_WORD_SEPARATOR);
 		}
 
-		return sbOutput.ToString();
+		return sbOutput.ToString().TrimEnd();
 	}
 
 	public static string Encode(string value)
@@ -81,25 +60,25 @@ public static class MorseCodeDecoder
 		if (string.IsNullOrWhiteSpace(value))
 			return string.Empty;
 
-		StringBuilder sbOutput = new();
-
 		var trimmedValue = value.ToUpper(CultureInfo.InvariantCulture).Trim();
-		var words = trimmedValue.Split(TEXT_WORD_SEPARATOR);
+		var words = trimmedValue.Split(TEXT_WORD_SEPARATOR, StringSplitOptions.RemoveEmptyEntries);
+
+		var sbOutput = new StringBuilder();
 
 		foreach (var word in words)
 		{
-			var letters = word.ToCharArray();
-
-			foreach (var l in letters)
+			foreach (var letter in word)
 			{
-				morseDictionary.TryGetValue(l, out var morseCodeValue);
-				sbOutput.Append(morseCodeValue ?? " ");
-				sbOutput.Append(MORSE_LETTER_SEPARATOR);
+				if (morseDictionary.TryGetValue(letter, out var morseCodeValue))
+				{
+					sbOutput.Append(morseCodeValue);
+					sbOutput.Append(MORSE_LETTER_SEPARATOR);
+				}
 			}
 
 			sbOutput.Append(MORSE_WORD_SEPARATOR);
 		}
 
-		return sbOutput.ToString();
+		return sbOutput.ToString().TrimEnd();
 	}
 }
