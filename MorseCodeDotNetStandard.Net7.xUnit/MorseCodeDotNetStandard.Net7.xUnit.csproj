@@ -23,6 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MorseCodeDotNet.Lib\MorseCodeDotNet.Lib.csproj" />
+    <ProjectReference Include="..\MorseCodeDotNet.Library\MorseCodeDotNet.Library.csproj" />
   </ItemGroup>
 </Project>
