@@ -56,7 +56,7 @@ public class MorseCodeTests
 
 	[Theory]
 	[MemberData(nameof(morseCodeTestData))]
-	public void Decode_Should_ReturnExpextedValue_WhenValueIsLetter(string morseCode, string expected)
+	public void Decode_Should_ReturnExpectedValue_WhenValueIsLetter(string morseCode, string expected)
 	{
 		// Act
 		var result = MorseCode.Decode(morseCode);
@@ -66,7 +66,7 @@ public class MorseCodeTests
 	}
 
 	[Fact]
-	public void Decode_Should_ReturnExpextedValue_IsWord()
+	public void Decode_Should_ReturnExpectedValue_IsWord()
 	{
 		// Act
 		var result = MorseCode.Decode(".- .-.. .-.. .. .");
@@ -76,7 +76,7 @@ public class MorseCodeTests
 	}
 
 	[Fact]
-	public void Decode_Should_ReturnExpextedValue_IsSentence()
+	public void Decode_Should_ReturnExpectedValue_IsSentence()
 	{
 		// Act
 		var result = MorseCode.Decode(".- .-.. .-.. .. .   -- --- .-. ... .   -.-. --- -.. .");
@@ -87,7 +87,7 @@ public class MorseCodeTests
 
 	[Theory]
 	[MemberData(nameof(reverseMorseCodeTestData))]
-	public void Encode_Should_ReturnExpextedValue_WhenValueIsLetter(string letter, string expected)
+	public void Encode_Should_ReturnExpectedValue_WhenValueIsLetter(string letter, string expected)
 	{
 		// Act
 		var result = MorseCode.Encode(letter);
@@ -97,7 +97,7 @@ public class MorseCodeTests
 	}
 
 	[Fact]
-	public void Encode_Should_ReturnExpextedValue_IsWord()
+	public void Encode_Should_ReturnExpectedValue_IsWord()
 	{
 		// Act
 		var result = MorseCode.Encode("ALLIE");
@@ -107,7 +107,7 @@ public class MorseCodeTests
 	}
 
 	[Fact]
-	public void Encode_Should_ReturnExpextedValue_IsSentence()
+	public void Encode_Should_ReturnExpectedValue_IsSentence()
 	{
 		// Act
 		var result = MorseCode.Encode("ALLIE MORSE CODE");
