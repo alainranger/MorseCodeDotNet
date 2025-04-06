@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MorseCodeDotNet.Library;
 
-public static class MorseCodeDecoder
+public static class MorseCode
 {
-	private const string MORSE_WORD_SEPARATOR = "   ";
+	private const string MORSE_WORD_SEPARATOR = "  ";
 	private const char MORSE_LETTER_SEPARATOR = ' ';
 	private const char TEXT_WORD_SEPARATOR = ' ';
 
